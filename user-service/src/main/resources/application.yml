@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: user-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: user-service-group
+
+# Variables d'environnement par défaut (admin IDs)
+admin:
+  ids: ${ADMIN_IDS:1,2,3}
