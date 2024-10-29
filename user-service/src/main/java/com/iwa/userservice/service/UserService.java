@@ -25,7 +25,7 @@ public class UserService {
 
     public User createUser(User user) {
         // Vérifier si l'email existe déjà
-        if (userRepository.findByEmail(user.getEmail()) != null) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email déjà utilisé");
         }
         return userRepository.save(user);
@@ -60,8 +60,8 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
         // Envoyer une notification à l'admin
         kafkaTemplate.send("user-deletion", String.valueOf(id));
+        System.out.println("Demande de suppression à un administrateur de l'user : " + id.toString());
     }
 }
