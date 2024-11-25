@@ -1,0 +1,128 @@
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+    networks:
+      - iwa-network
+
+  kafka:
+    image: bitnami/kafka:3.4
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "9092:9092"
+    networks:
+      - iwa-network
+
+  db-user-service:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: userdb
+    ports:
+      - "5432:5432"
+    networks:
+      - iwa-network
+    volumes:
+      - db-user-service-data:/var/lib/postgresql/data
+    command: >
+      postgres -c 'shared_buffers=256MB' 
+               -c 'max_connections=200'
+          
+  db-notification-service:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: notificationdb
+    ports:
+      - "5433:5432"
+    networks:
+      - iwa-network
+    volumes:
+      - db-notification-service-data:/var/lib/postgresql/data
+    command: >
+      postgres -c 'shared_buffers=256MB' 
+               -c 'max_connections=200'
+
+  discovery-service:
+    build:
+      context: ./discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - iwa-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - kafka
+      - db-user-service
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      # A mettre dans les secrets github avant de push
+      - JWT_SECRET=xezsTiEGP3H26wNtWgv975knXrZeqUUqBP1h5a/kxNxTuz7r5gABMbr7+zqeu6QSNB6iw8s+ofgtRPusEqZqJg== 
+      - EUREKA_CLIENT_SERVICE_URL=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-user-service:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - iwa-network
+
+  notification-service:
+    build:
+      context: ./notification-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - kafka
+      - db-notification-service
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      # A mettre dans les secrets github avant de push
+      - JWT_SECRET=xezsTiEGP3H26wNtWgv975knXrZeqUUqBP1h5a/kxNxTuz7r5gABMbr7+zqeu6QSNB6iw8s+ofgtRPusEqZqJg== 
+      - EUREKA_CLIENT_SERVICE_URL=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-notification-service:5432/notificationdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - iwa-network
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8083:8080"
+    depends_on:
+      - kafka
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICE_URL=http://discovery-service:8761/eureka
+    networks:
+      - iwa-network
+
+networks:
+  iwa-network:
+    name: projet-iwa-backend_iwa-network
+    driver: bridge
+
+volumes:
+  db-user-service-data:
+  db-notification-service-data:

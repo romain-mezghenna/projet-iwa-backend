@@ -1,0 +1,24 @@
+[submodule "api-gateway"]
+	path = api-gateway
+	url = https://github.com/romain-mezghenna/iwa-api-gateway
+[submodule "discovery-service"]
+	path = discovery-service
+	url = https://github.com/romain-mezghenna/iwa-discovery-service
+[submodule "user-service"]
+	path = user-service
+	url = https://github.com/romain-mezghenna/iwa-user-service
+[submodule "notification-service"]
+	path = notification-service
+	url = https://github.com/romain-mezghenna/iwa-notification-service
+[submodule "notification-service"]
+	path = reservation-service
+	url = https://github.com/Lilianmnreau/reservation-service
+[submodule "reservation-service"]
+	path = reservation-service
+	url = https://github.com/Lilianmnreau/reservation-service
+[submodule "emplacement-service"]
+	path = emplacement-service
+	url = https://github.com/romain-mezghenna/iwa-emplacement-service
+[submodule "article-service"]
+	path = article-service
+	url = https://github.com/Lilianmnreau/iwa-article-service
