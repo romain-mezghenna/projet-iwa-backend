@@ -16,3 +16,6 @@
 [submodule "reservation-service"]
 	path = reservation-service
 	url = https://github.com/Lilianmnreau/reservation-service
+[submodule "emplacement-service"]
+	path = emplacement-service
+	url = https://github.com/romain-mezghenna/iwa-emplacement-service
