@@ -19,3 +19,6 @@
 [submodule "emplacement-service"]
 	path = emplacement-service
 	url = https://github.com/romain-mezghenna/iwa-emplacement-service
+[submodule "article-service"]
+	path = article-service
+	url = https://github.com/Lilianmnreau/iwa-article-service
