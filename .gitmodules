@@ -10,3 +10,6 @@
 [submodule "user-service"]
 	path = user-service
 	url = https://github.com/romain-mezghenna/iwa-user-service
+[submodule "notification-service"]
+	path = notification-service
+	url = https://github.com/romain-mezghenna/iwa-notification-service
