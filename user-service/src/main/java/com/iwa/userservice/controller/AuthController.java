@@ -4,9 +4,12 @@ import com.iwa.userservice.model.User;
 import com.iwa.userservice.service.UserService;
 import com.iwa.userservice.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,12 +31,27 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User loginRequest) {
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+        // Chercher l'utilisateur par email
         Optional<User> user = userService.getUserByEmail(loginRequest.getEmail());
-        if (user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
-            return jwtTokenUtil.generateAccessToken(user.get().getId());
-        } else {
-            throw new RuntimeException("Email ou emot de passe incorrect");
+
+        // Vérifier si l'utilisateur existe
+        if (user.isEmpty()) {
+            // Notification d'erreur si l'utilisateur n'existe pas
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Utilisateur introuvable avec cet email."));
         }
+
+        // Vérifier si le mot de passe correspond
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
+            // Notification d'erreur pour mot de passe incorrect
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Mot de passe incorrect."));
+        }
+
+        // Si tout est valide, générer et retourner le token JWT
+        String token = jwtTokenUtil.generateAccessToken(user.get().getId());
+        return ResponseEntity.ok(Map.of("token", token));
     }
+
 }

@@ -1,9 +1,15 @@
 package com.iwa.userservice.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nom;
     private String prenom;
     private String telephone;
@@ -11,6 +17,8 @@ public class User {
     private String adresse;
     private String password;
     private String photo;
+
+    // Getters et setters
 
     public Long getId() {
         return id;

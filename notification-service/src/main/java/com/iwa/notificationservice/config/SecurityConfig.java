@@ -36,17 +36,16 @@ public class SecurityConfig {
     // SecurityFilterChain Bean definition
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Disable CSRF using the new CsrfConfigurer bean
         http
-                .cors(withDefaults())
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
-                .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/auth/**").permitAll()  // Public endpoints
-                        .anyRequest().authenticated()  // All other endpoints require authentication
-                );
+            .cors(withDefaults())
+            .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
+            .sessionManagement(sessionManagement -> sessionManagement
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                    // .requestMatchers("/auth/**").permitAll()  // Public endpoints
+                    .anyRequest().authenticated()  // All other endpoints require authentication
+            );
 
         // Add JWT Token Filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -58,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://example.com")); // Specify allowed origins
+        configuration.setAllowedOrigins(List.of("*")); // Specify allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 

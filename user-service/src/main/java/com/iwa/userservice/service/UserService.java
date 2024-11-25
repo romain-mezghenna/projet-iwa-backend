@@ -18,7 +18,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Value("${admin.ids}")
-    private String adminIds;
+    String adminIds;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -48,15 +48,36 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User updateUser(Long id, User userDetails) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        user.setPrenom(userDetails.getPrenom());
-        user.setNom(userDetails.getNom());
-        user.setTelephone(userDetails.getTelephone());
-        user.setEmail(userDetails.getEmail());
-        user.setAdresse(userDetails.getAdresse());
-        // Mettez à jour d'autres attributs si nécessaire
-        return userRepository.save(user);
+    public User updateUser(Long userId, User updatedUser) {
+        // Récupération de l'utilisateur existant
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Mettre à jour uniquement les champs non-nuls
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPassword() != null) {
+            existingUser.setPassword(updatedUser.getPassword());
+        }
+        if (updatedUser.getNom() != null) {
+            existingUser.setNom(updatedUser.getNom());
+        }
+        if (updatedUser.getPrenom() != null) {
+            existingUser.setPrenom(updatedUser.getPrenom());
+        }
+        if (updatedUser.getTelephone() != null) {
+            existingUser.setTelephone(updatedUser.getTelephone());
+        }
+        if (updatedUser.getAdresse() != null) {
+            existingUser.setAdresse(updatedUser.getAdresse());
+        }
+        if (updatedUser.getPhoto() != null) {
+            existingUser.setPhoto(updatedUser.getPhoto());
+        }
+
+        // Sauvegarde dans la base de données
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(Long id) {

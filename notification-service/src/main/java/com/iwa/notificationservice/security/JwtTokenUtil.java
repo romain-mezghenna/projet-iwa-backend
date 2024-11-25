@@ -1,29 +1,37 @@
 package com.iwa.notificationservice.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
 
-    private final String jwtSecret = "votreSecretJWT"; // À stocker dans une variable d'environnement
+    @Value("${security.jwt.secret}")
+    private String jwtSecret;
+
     private final String jwtIssuer = "com.iwa.userservice";
 
     public String generateAccessToken(Long userId) {
+        SecretKey jwtkey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24 heures
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(jwtkey,SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public Long getUserId(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+        SecretKey jwtkey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(jwtkey)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -31,8 +39,9 @@ public class JwtTokenUtil {
     }
 
     public boolean validate(String token) {
+        SecretKey jwtkey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(jwtkey).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
