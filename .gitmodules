@@ -7,3 +7,6 @@
 [submodule "discovery-service"]
 	path = discovery-service
 	url = https://github.com/romain-mezghenna/iwa-discovery-service
+[submodule "user-service"]
+	path = user-service
+	url = https://github.com/romain-mezghenna/iwa-user-service
