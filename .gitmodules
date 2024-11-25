@@ -10,3 +10,6 @@
 [submodule "notification-service"]
 	path = notification-service
 	url = https://github.com/romain-mezghenna/iwa-notification-service
+[submodule "notification-service"]
+	path = reservation-service
+	url = https://github.com/Lilianmnreau/reservation-service
