@@ -1,6 +1,3 @@
-[submodule "services/api-gateway"]
-	path = services/api-gateway
-	url = https://github.com/romain-mezghenna/iwa-api-gateway
 [submodule "api-gateway"]
 	path = api-gateway
 	url = https://github.com/romain-mezghenna/iwa-api-gateway
