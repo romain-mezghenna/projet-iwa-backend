@@ -22,3 +22,4 @@
 [submodule "messaging-service"]
 	path = messaging-service
 	url = https://github.com/romain-mezghenna/projet-iwa-backend
+	branch = main
