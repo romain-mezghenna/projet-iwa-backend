@@ -21,4 +21,4 @@
 	url = https://github.com/Lilianmnreau/iwa-article-service
 [submodule "messaging-service"]
 	path = messaging-service
-	url = https://github.com/romain-mezghenna/iwa-messaging-service
+	url = https://github.com/romain-mezghenna/projet-iwa-backend
