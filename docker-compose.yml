@@ -22,6 +22,8 @@ services:
     networks:
       - iwa-network
 
+#### Containers postgre
+
   db-user-service:
     image: postgres:17-alpine
     environment:
@@ -102,6 +104,22 @@ services:
       postgres -c 'shared_buffers=256MB' 
                -c 'max_connections=200'
 
+  db-messaging-service:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: messagingdb
+    ports:
+      - "5436:5432"
+    networks:
+      - iwa-network
+    volumes:
+      - db-messaging-service-data:/var/lib/postgresql/data
+    command: >
+      postgres -c 'shared_buffers=256MB' 
+               -c 'max_connections=200'
+
   discovery-service:
     build:
       context: ./discovery-service
@@ -111,6 +129,8 @@ services:
       - iwa-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
+#### Containers services
 
   user-service:
     build:
@@ -132,25 +152,25 @@ services:
     networks:
       - iwa-network
 
-  reservation-service:
-    build:
-      context: ./reservation-service
-    ports:
-      - "8091:8080"
-    depends_on:
-      - kafka
-      - db-reservation-service
-      - discovery-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      # A mettre dans les secrets github avant de push
-      - JWT_SECRET=xezsTiEGP3H26wNtWgv975knXrZeqUUqBP1h5a/kxNxTuz7r5gABMbr7+zqeu6QSNB6iw8s+ofgtRPusEqZqJg== 
-      - EUREKA_CLIENT_SERVICE_URL=http://discovery-service:8761/eureka
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-reservation-service:5432/reservationdb
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-    networks:
-      - iwa-network
+  # reservation-service:
+  #   build:
+  #     context: ./reservation-service
+  #   ports:
+  #     - "8091:8080"
+  #   depends_on:
+  #     - kafka
+  #     - db-reservation-service
+  #     - discovery-service
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #     # A mettre dans les secrets github avant de push
+  #     - JWT_SECRET=xezsTiEGP3H26wNtWgv975knXrZeqUUqBP1h5a/kxNxTuz7r5gABMbr7+zqeu6QSNB6iw8s+ofgtRPusEqZqJg== 
+  #     - EUREKA_CLIENT_SERVICE_URL=http://discovery-service:8761/eureka
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://db-reservation-service:5432/reservationdb
+  #     - SPRING_DATASOURCE_USERNAME=postgres
+  #     - SPRING_DATASOURCE_PASSWORD=postgres
+  #   networks:
+  #     - iwa-network
   
   emplacement-service:
     build:
@@ -213,6 +233,26 @@ services:
     networks:
       - iwa-network
 
+  messaging-service:
+    build:
+      context: ./messaging-service
+    ports:
+      - "8093:8080"
+    depends_on:
+      - kafka
+      - db-messaging-service
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      # A mettre dans les secrets github avant de push
+      - JWT_SECRET=xezsTiEGP3H26wNtWgv975knXrZeqUUqBP1h5a/kxNxTuz7r5gABMbr7+zqeu6QSNB6iw8s+ofgtRPusEqZqJg== 
+      - EUREKA_CLIENT_SERVICE_URL=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-messaging-service:5432/messagingdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - iwa-network
+
   api-gateway:
     build:
       context: ./api-gateway
@@ -238,3 +278,4 @@ volumes:
   db-emplacement-service-data:
   db-article-service-data:
   db-reservation-service-data:
+  db-messaging-service-data:
