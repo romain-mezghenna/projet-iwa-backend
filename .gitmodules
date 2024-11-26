@@ -19,6 +19,6 @@
 [submodule "article-service"]
 	path = article-service
 	url = https://github.com/Lilianmnreau/iwa-article-service
-[submodule "iwa-messaging-service"]
-	path = iwa-messaging-service
+[submodule "messaging-service"]
+	path = messaging-service
 	url = https://github.com/romain-mezghenna/iwa-messaging-service
