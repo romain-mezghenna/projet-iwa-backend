@@ -7,7 +7,7 @@ YELLOW="\033[0;33m"
 CYAN="\033[0;36m"
 NC="\033[0m" # Pas de couleur
 
-# Array contenant les noms des microservices
+# Liste des microservices
 MICROSERVICES=(
   "api-gateway"
   "article-service"
@@ -16,14 +16,22 @@ MICROSERVICES=(
   "notification-service"
   "reservation-service"
   "user-service"
+  "messaging-service"
 )
 
 # Parcours des microservices
 for SERVICE in "${MICROSERVICES[@]}"; do
   if [ -d "$SERVICE" ]; then
-    echo -e "${CYAN}========== Updating $SERVICE ==========${NC}"
+    echo -e "${CYAN}========== Traitement de $SERVICE ==========${NC}"
     cd "$SERVICE"
     
+    # Vérifier si le dossier est vide
+    if [ -z "$(ls -A .)" ]; then
+      echo -e "${YELLOW}Le dossier $SERVICE est vide. Initialisation des sous-modules...${NC}"
+      git submodule init
+      git submodule update
+    fi
+
     # Vérifier si le dossier est un dépôt Git
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
       # Essayer de faire un git pull
@@ -48,4 +56,4 @@ for SERVICE in "${MICROSERVICES[@]}"; do
   fi
 done
 
-echo -e "${GREEN}Mise à jour terminée pour tous les microservices.${NC}"
+echo -e "${GREEN}Traitement terminé pour tous les microservices.${NC}"
