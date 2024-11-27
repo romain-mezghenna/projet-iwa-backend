@@ -23,3 +23,6 @@
 	path = messaging-service
 	url = https://github.com/romain-mezghenna/iwa-messaging-service
 	branch = main
+[submodule "image-service"]
+	path = image-service
+	url = https://github.com/Lilianmnreau/iwa-image-service
