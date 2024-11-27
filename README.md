@@ -10,7 +10,6 @@ Ce projet backend est basé sur une architecture de microservices et utilise **D
 3. [Installation et lancement](#installation-et-lancement)
 4. [Configuration](#configuration)
 5. [Contributions](#contributions)
-6. [Licence](#licence)
 
 ---
 
