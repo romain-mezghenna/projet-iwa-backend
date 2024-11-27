@@ -17,6 +17,7 @@ MICROSERVICES=(
   "reservation-service"
   "user-service"
   "messaging-service"
+  "image-service"
 )
 
 # Parcours des microservices
