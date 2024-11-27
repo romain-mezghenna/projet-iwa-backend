@@ -44,53 +44,58 @@ Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votr
 ## **Installation et lancement**
 
 ### **Étape 1 : Cloner le projet**
-Clonez le dépôt Git de ce projet en utilisant la commande suivante :
+Clonez le dépôt Git de ce projet en utilisant la commande suivante :  
 
-git clone https://github.com/romain-mezghenna/projet-iwa-backend
-cd projet-iwa-backend
-Étape 2 : Mise à jour des sous-modules
-Exécutez le script update-ms.sh pour mettre à jour les microservices :
+git clone https://github.com/romain-mezghenna/projet-iwa-backend    
+cd projet-iwa-backend  
 
-./update-ms.sh
-Étape 3 : Lancer les microservices
-Lancez tous les services définis dans le fichier docker-compose.yml en exécutant :
+#### **Étape 2 : Mise à jour des sous-modules**  
+Exécutez le script update-ms.sh pour mettre à jour les microservices :  
 
-docker compose up --build
-Remarque : Cette commande construira et démarrera tous les microservices ainsi que leurs bases de données et services dépendants.
+./update-ms.sh  
 
-Configuration
+#### **Étape 3 : Lancer les microservices**  
+Lancez tous les services définis dans le fichier docker-compose.yml en exécutant :  
 
-Ports par défaut
-Microservice	Port
-User Service	http://localhost:8081
-Article Service	http://localhost:8089
-Reservation Service	http://localhost:8091
-Emplacement Service	http://localhost:8088
-Messagerie Service	http://localhost:8093
-Notification Service	http://localhost:8082
-API Gateway	http://localhost:8083
-Discovery Service	http://localhost:8761
-Bases de données
-Chaque microservice est associé à une base de données PostgreSQL. Les configurations spécifiques sont définies dans le fichier docker-compose.yml via des variables d'environnement.
+docker compose up --build  
+Remarque : Cette commande construira et démarrera tous les microservices ainsi que leurs bases de données et services dépendants.  
 
-Réseau
-Tous les microservices sont connectés via un réseau Docker interne nommé iwa-network. Les interactions entre les services passent par leurs noms DNS définis dans le fichier docker-compose.yml.
+**Configuration**    
 
-Kafka et Zookeeper
-Le backend utilise Kafka pour la communication entre certains microservices. Zookeeper est configuré pour supporter Kafka :
+Ports par défaut  
 
-Kafka : localhost:9092
-Zookeeper : localhost:2181
-Contributions
+- Microservice	Port  
+- User Service	http://localhost:8081  
+- Article Service	http://localhost:8089  
+- Reservation Service	http://localhost:8091  
+- Emplacement Service	http://localhost:8088  
+- Messagerie Service	http://localhost:8093  
+- Notification Service	http://localhost:8082  
+- API Gateway	http://localhost:8083  
+- Discovery Service	http://localhost:8761  
 
-Les contributions sont les bienvenues ! Voici comment participer :
+**Bases de données**    
+Chaque microservice est associé à une base de données PostgreSQL. Les configurations spécifiques sont définies dans le fichier docker-compose.yml via des variables d'environnement.  
 
-Forkez le dépôt.
-Créez une branche pour vos modifications (feature/nouvelle-fonctionnalite).
-Soumettez une pull request pour revue.
-Auteurs
+**Réseau**    
+Tous les microservices sont connectés via un réseau Docker interne nommé iwa-network. Les interactions entre les services passent par leurs noms DNS définis dans le fichier docker-compose.yml.  
 
-Romain Mezghenna : romain24.mezghenna01@gmail.com
-Robin Vincent : robin.vin100@gmail.com
-Lilian Monnereau : lilian.monnereau@gmail.com
+**Kafka et Zookeeper**    
+Le backend utilise Kafka pour la communication entre certains microservices. Zookeeper est configuré pour supporter Kafka :  
+
+Kafka : localhost:9092  
+Zookeeper : localhost:2181  
+Contributions  
+
+Les contributions sont les bienvenues ! Voici comment participer :  
+
+Forkez le dépôt.  
+Créez une branche pour vos modifications (feature/nouvelle-fonctionnalite).  
+Soumettez une pull request pour revue.  
+
+**Auteurs**    
+
+Romain Mezghenna : romain24.mezghenna01@gmail.com  
+Robin Vincent : robin.vin100@gmail.com  
+Lilian Monnereau : lilian.monnereau@gmail.com  
 
