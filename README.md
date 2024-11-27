@@ -60,7 +60,7 @@ Lancez tous les services définis dans le fichier docker-compose.yml en exécuta
 docker compose up --build  
 Remarque : Cette commande construira et démarrera tous les microservices ainsi que leurs bases de données et services dépendants.  
 
-**Configuration**    
+## **Configuration**    
 
 Ports par défaut  
 
@@ -87,7 +87,7 @@ Kafka : localhost:9092
 Zookeeper : localhost:2181  
 Contributions  
 
-Les contributions sont les bienvenues ! Voici comment participer :  
+## **Les contributions sont les bienvenues ! Voici comment participer :**  
 
 Forkez le dépôt.  
 Créez une branche pour vos modifications (feature/nouvelle-fonctionnalite).  
