@@ -9,7 +9,6 @@ Ce projet backend est basé sur une architecture de microservices et utilise **D
 2. [Prérequis](#prérequis)
 3. [Installation et lancement](#installation-et-lancement)
 4. [Configuration](#configuration)
-5. [Contributions](#contributions)
 
 ---
 
@@ -84,13 +83,6 @@ Le backend utilise Kafka pour la communication entre certains microservices. Zoo
 
 Kafka : localhost:9092  
 Zookeeper : localhost:2181  
-Contributions  
-
-## **Les contributions sont les bienvenues ! Voici comment participer :**  
-
-Forkez le dépôt.  
-Créez une branche pour vos modifications (feature/nouvelle-fonctionnalite).  
-Soumettez une pull request pour revue.  
 
 **Auteurs**    
 
